@@ -50,9 +50,9 @@ jobs:
           privateKey: ${{ secrets.SERVER_SSH_KEY }}
           debug: false
           command: |
-            cd nodeapps/recipe-backend
+            cd nodeapps/travel-backend
             npm install
-            sudo systemctl stop recipe-backend
-            sudo cp recipe-backend.service /lib/systemd/system/recipe-backend.service
+            sudo systemctl stop travel-backend
+            sudo cp travel-backend.service /lib/systemd/system/travel-backend.service
             sudo systemctl daemon-reload
-            sudo systemctl start recipe-backend
+            sudo systemctl start travel-backend
