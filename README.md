@@ -56,6 +56,7 @@ npm install
    - SECRET_KEY = 'xT1tdO3CfMH01pjxC+guN1LWSt2nKvr5td6KUpw7Czg='
 
 6. Compile and run the project locally.
+7. 
 
 ```
 npm run start
