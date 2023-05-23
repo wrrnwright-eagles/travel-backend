@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const RecipeStep = sequelize.define("recipeStep", {
+  const ActivityStep = sequelize.define("activityStep", {
     stepNumber: {
       type: Sequelize.INTEGER,
       allowNull: false,
@@ -9,5 +9,5 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
   });
-  return RecipeStep;
+  return ActivityStep;
 };

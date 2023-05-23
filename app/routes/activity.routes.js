@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  const RecipeStep = require("../controllers/recipeStep.controller.js");
+  const RecipeStep = require("../controllers/activity.controller.js");
   const { authenticateRoute } = require("../authentication/authentication");
   var router = require("express").Router();
 

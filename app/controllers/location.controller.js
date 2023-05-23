@@ -1,144 +1,144 @@
 const db = require("../models");
-const Ingredient = db.ingredient;
+const Location = db.location;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Ingredient
+// Create and Save a new Location
 exports.create = (req, res) => {
   // Validate request
   if (req.body.name === undefined) {
-    const error = new Error("Name cannot be empty for ingredient!");
+    const error = new Error("Name cannot be empty for Location!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.unit === undefined) {
-    const error = new Error("Unit cannot be empty for ingredient!");
+    const error = new Error("Unit cannot be empty for Location!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.pricePerUnit === undefined) {
-    const error = new Error("Price per unit cannot be empty for ingredient!");
+    const error = new Error("Price per unit cannot be empty for Location!");
     error.statusCode = 400;
     throw error;
   }
 
-  // Create a Ingredient
-  const ingredient = {
+  // Create a Location
+  const Location = {
     name: req.body.name,
     unit: req.body.unit,
     pricePerUnit: req.body.pricePerUnit,
   };
-  // Save Ingredient in the database
-  Ingredient.create(ingredient)
+  // Save Location in the database
+  Location.create(location)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Ingredient.",
+          err.message || "Some error occurred while creating the Location.",
       });
     });
 };
 
-// Retrieve all Ingredients from the database.
+// Retrieve all Locations from the database.
 exports.findAll = (req, res) => {
-  const ingredientId = req.query.ingredientId;
-  var condition = ingredientId
+  const locationId = req.query.locationId;
+  var condition = locationId
     ? {
         id: {
-          [Op.like]: `%${ingredientId}%`,
+          [Op.like]: `%${locationId}%`,
         },
       }
     : null;
 
-  Ingredient.findAll({ where: condition, order: [["name", "ASC"]] })
+  Location.findAll({ where: condition, order: [["name", "ASC"]] })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving ingredients.",
+          err.message || "Some error occurred while retrieving Locations.",
       });
     });
 };
 
-// Find a single Ingredient with an id
+// Find a single Location with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Ingredient.findByPk(id)
+  Location.findByPk(id)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Ingredient with id=" + id,
+        message: err.message || "Error retrieving Location with id=" + id,
       });
     });
 };
 
-// Update a Ingredient by the id in the request
+// Update a Location by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Ingredient.update(req.body, {
+  Location.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Ingredient was updated successfully.",
+          message: "Location was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Ingredient with id=${id}. Maybe Ingredient was not found or req.body is empty!`,
+          message: `Cannot update Location with id=${id}. Maybe Location was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error updating Ingredient with id=" + id,
+        message: err.message || "Error updating Location with id=" + id,
       });
     });
 };
 
-// Delete a Ingredient with the specified id in the request
+// Delete a Location with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Ingredient.destroy({
+  Location.destroy({
     where: { id: id },
   })
     .then((number) => {
       if (number == 1) {
         res.send({
-          message: "Ingredient was deleted successfully!",
+          message: "Location was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Ingredient with id=${id}. Maybe Ingredient was not found!`,
+          message: `Cannot delete Location with id=${id}. Maybe Location was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Could not delete Ingredient with id=" + id,
+        message: err.message || "Could not delete Location with id=" + id,
       });
     });
 };
 
-// Delete all Ingredients from the database.
+// Delete all Locations from the database.
 exports.deleteAll = (req, res) => {
-  Ingredient.destroy({
+  Location.destroy({
     where: {},
     truncate: false,
   })
     .then((number) => {
-      res.send({ message: `${number} Ingredients were deleted successfully!` });
+      res.send({ message: `${number} Locations were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all ingredients.",
+          err.message || "Some error occurred while removing all Locations.",
       });
     });
 };
