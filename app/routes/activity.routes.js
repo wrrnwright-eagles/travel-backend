@@ -1,46 +1,45 @@
 module.exports = (app) => {
-  const RecipeStep = require("../controllers/activity.controller.js");
+  const ActivityStep = require("../controllers/activity.controller.js");
   const { authenticateRoute } = require("../authentication/authentication");
   var router = require("express").Router();
 
-  // Create a new Recipe Step for a Recipe
+  // Create a new Activity Step for a Itinerary
   router.post(
-    "/recipes/:recipeId/recipeSteps/",
+    "/itinerary/:itineraryId/activity/",
     [authenticateRoute],
-    RecipeStep.create
+    ActivityStep.create
   );
 
-  // Retrieve all Recipe Steps
-  router.get("/recipeSteps/", RecipeStep.findAll);
+  // Retrieve all Activity Steps
+  router.get("/activity/", ActivityStep.findAll);
 
-  // Retrieve all Recipe Steps for a Recipe
-  router.get("/recipes/:recipeId/recipeSteps/", RecipeStep.findAllForRecipe);
-
-  // Retrieve all Recipe Steps for a Recipe and include the ingredients
+  // Retrieve all Activity Steps for a Itinerary
+  router.get("/itinerary/:itineraryId/activity/", ActivityStep.findAllForItinerary);
+  // Retrieve all Activity Steps for a Itinerary and include the locations
   router.get(
-    "/recipes/:recipeId/recipeStepsWithIngredients/",
-    RecipeStep.findAllForRecipeWithIngredients
+    "/itinerary/:itineraryId/activityWithLocations/",
+    ActivityStep.findAllForItineraryWithLocations
   );
 
-  // Retrieve a single Recipe Step with id
-  router.get("/recipes/:recipeId/recipeSteps/:id", RecipeStep.findOne);
+  // Retrieve a single Activity Step with id
+  router.get("/itinerary/:itineraryId/activity/:id", ActivityStep.findOne);
 
-  // Update a Recipe Step with id
+  // Update a Activity Step with id
   router.put(
-    "/recipes/:recipeId/recipeSteps/:id",
+    "/itinerary/:itineraryId/activity/:id",
     [authenticateRoute],
-    RecipeStep.update
+    ActivityStep.update
   );
 
-  // Delete a Recipe Step with id
+  // Delete a Activity Step with id
   router.delete(
-    "/recipes/:recipeId/recipeSteps/:id",
+    "/itinerary/:itineraryId/activity/:id",
     [authenticateRoute],
-    RecipeStep.delete
+    ActivityStep.delete
   );
 
-  // Delete all Recipe Steps
-  router.delete("/recipeSteps/", [authenticateRoute], RecipeStep.deleteAll);
+  // Delete all Activity Steps
+  router.delete("/activity/", [authenticateRoute], ActivityStep.deleteAll);
 
   app.use("/travelapi", router);
 };

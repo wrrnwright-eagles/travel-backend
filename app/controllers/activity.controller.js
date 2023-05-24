@@ -81,7 +81,7 @@ exports.findAllForItinerary = (req, res) => {
 };
 
 // Find all activitys for a Itinerary and include the locations
-exports.findAllForItineraryWithIngredients = (req, res) => {
+exports.findAllForItineraryWithLocations = (req, res) => {
   const ItineraryId = req.params.ItineraryId;
   activity.findAll({
     where: { ItineraryId: ItineraryId },
@@ -92,8 +92,8 @@ exports.findAllForItineraryWithIngredients = (req, res) => {
         required: false,
         include: [
           {
-            model: Ingredient,
-            as: "ingredient",
+            model: Location,
+            as: "location",
             required: false,
           },
         ],

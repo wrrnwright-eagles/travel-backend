@@ -1,25 +1,25 @@
 module.exports = (app) => {
-  const Ingredient = require("../controllers/ingredient.controller.js");
+  const Location = require("../controllers/location.controller.js");
   var router = require("express").Router();
   const { authenticateRoute } = require("../authentication/authentication");
 
-  // Create a new Ingredient
-  router.post("/ingredients/", [authenticateRoute], Ingredient.create);
+  // Create a new Location
+  router.post("/location/", [authenticateRoute], Location.create);
 
-  // Retrieve all Ingredient
-  router.get("/ingredients/", Ingredient.findAll);
+  // Retrieve all Locations
+  router.get("/location/", Location.findAll);
 
-  // Retrieve a single Ingredient with ingredientId
-  router.get("/ingredients/:id", Ingredient.findOne);
+  // Retrieve a single Location with locationId
+  router.get("/location/:id", Location.findOne);
 
-  // Update an Ingredient with ingredientId
-  router.put("/ingredients/:id", [authenticateRoute], Ingredient.update);
+  // Update an Location with locationId
+  router.put("/location/:id", [authenticateRoute], Location.update);
 
-  // Delete an Ingredient with ingredientId
-  router.delete("/ingredients/:id", [authenticateRoute], Ingredient.delete);
+  // Delete an Location with locationId
+  router.delete("/location/:id", [authenticateRoute], Location.delete);
 
-  // Create a new Ingredient
-  router.delete("/ingredients/", [authenticateRoute], Ingredient.deleteAll);
+  // Create a new Location
+  router.delete("/location/", [authenticateRoute], Location.deleteAll);
 
   app.use("/travelapi", router);
 };

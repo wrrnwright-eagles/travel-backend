@@ -1,32 +1,32 @@
 module.exports = (app) => {
-  const Recipe = require("../controllers/itinerary.controller.js");
+  const Itinerary = require("../controllers/itinerary.controller.js");
   const { authenticateRoute } = require("../authentication/authentication");
   var router = require("express").Router();
 
-  // Create a new Recipe
-  router.post("/recipes/", [authenticateRoute], Recipe.create);
+  // Create a new Itinerary
+  router.post("/itinerary/", [authenticateRoute], Itinerary.create);
 
-  // Retrieve all Recipes for user
+  // Retrieve all Itineraries for user
   router.get(
-    "/recipes/user/:userId",
+    "/itinerary/user/:userId",
     [authenticateRoute],
-    Recipe.findAllForUser
+    Itinerary.findAllForUser
   );
 
-  // Retrieve all published Recipes
-  router.get("/recipes/", Recipe.findAllPublished);
+  // Retrieve all published Itineraries
+  router.get("/itinerary/", Itinerary.findAllPublished);
 
-  // Retrieve a single Recipe with id
-  router.get("/recipes/:id", Recipe.findOne);
+  // Retrieve a single Itinerary with id
+  router.get("/itinerary/:id", Itinerary.findOne);
 
-  // Update a Recipe with id
-  router.put("/recipes/:id", [authenticateRoute], Recipe.update);
+  // Update a Itinerary with id
+  router.put("/itinerary/:id", [authenticateRoute], Itinerary.update);
 
-  // Delete a Recipe with id
-  router.delete("/recipes/:id", [authenticateRoute], Recipe.delete);
+  // Delete a Itinerary with id
+  router.delete("/itinerary/:id", [authenticateRoute], Itinerary.delete);
 
-  // Delete all Recipes
-  router.delete("/recipes/", [authenticateRoute], Recipe.deleteAll);
+  // Delete all Itineraries
+  router.delete("/itinerary/", [authenticateRoute], Itinerary.deleteAll);
 
   app.use("/travelapi", router);
 };

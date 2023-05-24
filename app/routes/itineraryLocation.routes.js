@@ -1,55 +1,56 @@
 module.exports = (app) => {
-  const RecipeIngredient = require("../controllers/recipeIngredient.controller.js");
+  const itineraryLocation = require("../controllers/itineraryLocation.controller.js");
   var router = require("express").Router();
   const { authenticateRoute } = require("../authentication/authentication");
 
-  // Create a new Recipe Ingredient for a Recipe
+  // Create a new Itinerary Location for a Itinerary
   router.post(
-    "/recipes/:recipeId/recipeIngredients/",
+    "/itinerary/:itineraryId/itineraryLocation/",
     [authenticateRoute],
-    RecipeIngredient.create
+    itineraryLocation.create
   );
 
-  // Retrieve all Recipe Ingredients
-  router.get("/recipeIngredients/", RecipeIngredient.findAll);
+  // Retrieve all Itinerary Locations
+  router.get("/itineraryLocation/", itineraryLocation.findAll);
 
-  // Retrieve all Recipe Ingredients for a Recipe
+  // Retrieve all itinerary Locations for a Itinerary
   router.get(
-    "/recipes/:recipeId/recipeIngredients/",
-    RecipeIngredient.findAllForRecipe
+    "/itinerary/:itineraryId/itineraryLocation/",
+    itineraryLocation.findAllForRecipe
   );
 
   // Retrieve all Recipe Ingredients for a Recipe Step and include the ingredients
+  // still need to work on this one
   router.get(
-    "/recipes/:recipeId/recipeSteps/:recipeStepId/recipeIngredientsWithIngredients/",
-    RecipeIngredient.findAllForRecipeStepWithIngredients
+    "/itinerary/:itineraryId/activity/:activityStepId/activityStepWithLocations/",
+    itineraryLocation.findAllForActivityStepWithLocations
   );
 
-  // Retrieve a single Recipe Ingredient with id
+  // Retrieve a single Itinerary Location with id
   router.get(
-    "/recipes/:recipeId/recipeIngredients/:id",
-    RecipeIngredient.findOne
+    "/itinerary/:itineraryId/itineraryLocation/:id",
+    itineraryLocation.findOne
   );
 
-  // Update a Recipe Ingredient with id
+  // Update a Itinerary Location with id
   router.put(
-    "/recipes/:recipeId/recipeIngredients/:id",
+    "/itinerary/:itineraryId/itineraryLocation/:id",
     [authenticateRoute],
-    RecipeIngredient.update
+    itineraryLocation.update
   );
 
-  // Delete a Recipe Ingredient with id
+  // Delete a Itinerary Location with id
   router.delete(
-    "/recipes/:recipeId/recipeIngredients/:id",
+    "/itinerary/:itineraryId/itineraryLocation/:id",
     [authenticateRoute],
-    RecipeIngredient.delete
+    itineraryLocation.delete
   );
 
-  // Delete all Recipe Ingredients
+  // Delete all Itinerary Locations
   router.delete(
-    "/recipeIngredients/",
+    "/itineraryLocation/",
     [authenticateRoute],
-    RecipeIngredient.deleteAll
+    itineraryLocation.deleteAll
   );
 
   app.use("/travelapi", router);

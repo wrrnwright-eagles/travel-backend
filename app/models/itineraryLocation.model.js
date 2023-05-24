@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
-  const ActivityIngredient = sequelize.define("activityIngredient", {
+  const itineraryLocation = sequelize.define("itineraryLocation", {
     quantity: {
       type: Sequelize.FLOAT,
       allowNull: false,
     },
   });
-  return ActivityIngredient;
+  return itineraryLocation;
 };
