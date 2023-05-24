@@ -14,13 +14,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.location = require.location.model.sequelize, Sequelize;
-db.activity = require.activity.model.jsl.js(sequelize, Sequelize);
-db.activityStep = require.activityStep.model.jsl.js(sequelize, Sequelize);
-db.activity.model.js
+db.location = require("./location.model.js")(sequelize, Sequelize);
+db.activity = require("./activity.model.js")(sequelize, Sequelize);
+db.activityStep = require("./activityStep.model.js")(sequelize, Sequelize);
+db.itineraryLocation = require("./itineraryLocation.model.js")(
   sequelize,
   Sequelize
-;
+);
 db.session = require("./session.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 
