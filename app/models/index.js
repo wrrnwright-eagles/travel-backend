@@ -87,7 +87,7 @@ db.itineraryLocation.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.itineraryLocation.belongsTo(
-  db.Location,
+  db.location,
   { as: "location" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
