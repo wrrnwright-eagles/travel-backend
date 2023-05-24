@@ -16,7 +16,7 @@ module.exports = (app) => {
   // Retrieve all itinerary Locations for a Itinerary
   router.get(
     "/itinerary/:itineraryId/itineraryLocation/",
-    itineraryLocation.findAllForRecipe
+    itineraryLocation.findAllForActivity
   );
 
   // Retrieve all Recipe Ingredients for a Recipe Step and include the ingredients
