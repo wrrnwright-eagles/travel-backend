@@ -14,13 +14,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.location = require.location.model.sequelize, Sequelize;
-db.activity = require.activity.model.jsl.js(sequelize, Sequelize);
-db.activityStep = require.activityStep.model.jsl.js(sequelize, Sequelize);
-db.activity.model.js
+db.location = require("./location.model.js")(sequelize, Sequelize);
+db.activity = require("./activity.model.js")(sequelize, Sequelize);
+db.activityStep = require("./activityStep.model.js")(sequelize, Sequelize);
+db.itineraryLocation = require("./itineraryLocation.model.js")(
   sequelize,
   Sequelize
-;
+);
 db.session = require("./session.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 
@@ -60,35 +60,35 @@ db.activityStep.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
-// foreign keys for activitylocation
+// foreign keys for itinerarylocation
 db.activityStep.hasMany(
-  db.activityLocation,
-  { as: "activityLocation" },
+  db.itineraryLocation,
+  { as: "itineraryLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.activity.hasMany(
-  db.activityLocation,
-  { as: "activityLocation" },
+  db.itineraryLocation,
+  { as: "itineraryLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.location.hasMany(
-  db.activityLocation,
-  { as: "activityLocation" },
+  db.itineraryLocation,
+  { as: "itineraryLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.activityLocation.belongsTo(
+db.itineraryLocation.belongsTo(
   db.activityStep,
   { as: "activityStep" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
-db.activityLocation.belongsTo(
+db.itineraryLocation.belongsTo(
   db.activity,
   { as: "activity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.activityLocation.belongsTo(
-  db.Location,
-  { as: "ocation" },
+db.itineraryLocation.belongsTo(
+  db.location,
+  { as: "location" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
