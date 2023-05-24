@@ -21,5 +21,5 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
   });
-  return activity;
+  return Activity;
 };
