@@ -1,13 +1,16 @@
 module.exports = (sequelize, Sequelize) => {
-  const Session = sequelize.define("session", {
-    email: {
+  const Trips = sequelize.define("trips", {
+    name: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    expirationDate: {
+    start_date: {
       type: Sequelize.DATE,
       allowNull: false,
     },
+    end_date: {
+      type: Sequelize.DATE,
+    },
   });
-  return Session;
+  return Trips;
 };
