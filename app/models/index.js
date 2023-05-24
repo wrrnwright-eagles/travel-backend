@@ -14,13 +14,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.ingredient = require("./ingredient.model.js")(sequelize, Sequelize);
-db.recipe = require("./recipe.model.js")(sequelize, Sequelize);
-db.recipeStep = require("./recipeStep.model.js")(sequelize, Sequelize);
-db.recipeIngredient = require("./recipeIngredient.model.js")(
+db.location = require.location.model.sequelize, Sequelize;
+db.activity = require.activity.model.jsl.js(sequelize, Sequelize);
+db.activityStep = require.activityStep.model.jsl.js(sequelize, Sequelize);
+db.activity.model.js
   sequelize,
   Sequelize
-);
+;
 db.session = require("./session.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 
@@ -36,59 +36,59 @@ db.session.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
-// foreign key for recipe
+// foreign key for activity
 db.user.hasMany(
-  db.recipe,
-  { as: "recipe" },
+  db.activity,
+  { as: "activity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.recipe.belongsTo(
+db.activity.belongsTo(
   db.user,
   { as: "user" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
 
-// foreign key for recipeStep
-db.recipe.hasMany(
-  db.recipeStep,
-  { as: "recipeStep" },
+// foreign key for activityStep
+db.activity.hasMany(
+  db.activityStep,
+  { as: "activityStep" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.recipeStep.belongsTo(
-  db.recipe,
-  { as: "recipe" },
+db.activityStep.belongsTo(
+  db.activity,
+  { as: "activity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
-// foreign keys for recipeIngredient
-db.recipeStep.hasMany(
-  db.recipeIngredient,
-  { as: "recipeIngredient" },
+// foreign keys for activitylocation
+db.activityStep.hasMany(
+  db.activityLocation,
+  { as: "activityLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.recipe.hasMany(
-  db.recipeIngredient,
-  { as: "recipeIngredient" },
+db.activity.hasMany(
+  db.activityLocation,
+  { as: "activityLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.ingredient.hasMany(
-  db.recipeIngredient,
-  { as: "recipeIngredient" },
+db.location.hasMany(
+  db.activityLocation,
+  { as: "activityLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.recipeIngredient.belongsTo(
-  db.recipeStep,
-  { as: "recipeStep" },
+db.activityLocation.belongsTo(
+  db.activityStep,
+  { as: "activityStep" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
-db.recipeIngredient.belongsTo(
-  db.recipe,
-  { as: "recipe" },
+db.activityLocation.belongsTo(
+  db.activity,
+  { as: "activity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.recipeIngredient.belongsTo(
-  db.ingredient,
-  { as: "ingredient" },
+db.activityLocation.belongsTo(
+  db.Location,
+  { as: "ocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 

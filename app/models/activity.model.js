@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Recipe = sequelize.define("recipe", {
+  const Activity = sequelize.define("activity", {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -21,5 +21,5 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
   });
-  return Recipe;
+  return activity;
 };
