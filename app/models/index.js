@@ -60,35 +60,35 @@ db.activityStep.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
-// foreign keys for activitylocation
+// foreign keys for itinerarylocation
 db.activityStep.hasMany(
-  db.activityLocation,
-  { as: "activityLocation" },
+  db.itineraryLocation,
+  { as: "itineraryLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.activity.hasMany(
-  db.activityLocation,
-  { as: "activityLocation" },
+  db.itineraryLocation,
+  { as: "itineraryLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.location.hasMany(
-  db.activityLocation,
-  { as: "activityLocation" },
+  db.itineraryLocation,
+  { as: "itineraryLocation" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.activityLocation.belongsTo(
+db.itineraryLocation.belongsTo(
   db.activityStep,
   { as: "activityStep" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
-db.activityLocation.belongsTo(
+db.itineraryLocation.belongsTo(
   db.activity,
   { as: "activity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.activityLocation.belongsTo(
+db.itineraryLocation.belongsTo(
   db.Location,
-  { as: "ocation" },
+  { as: "location" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
