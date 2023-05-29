@@ -1,45 +1,25 @@
 module.exports = (app) => {
-  const ActivityStep = require("../controllers/activity.controller.js");
-  const { authenticateRoute } = require("../authentication/authentication");
+  const Activity = require("../controllers/activity.controller.js");
   var router = require("express").Router();
+  const { authenticateRoute } = require("../authentication/authentication");
 
-  // Create a new Activity Step for a Itinerary
-  router.post(
-    "/itinerary/:itineraryId/activity/",
-    [authenticateRoute],
-    ActivityStep.create
-  );
+  // Create a new Activity
+  router.post("/activities/", [authenticateRoute], Activity.create);
 
-  // Retrieve all Activity Steps
-  router.get("/activity/", ActivityStep.findAll);
+  // Retrieve all Activity
+  router.get("/activities/", Activity.findAll);
 
-  // Retrieve all Activity Steps for a Itinerary
-  router.get("/itinerary/:itineraryId/activity/", ActivityStep.findAllForItinerary);
-  // Retrieve all Activity Steps for a Itinerary and include the locations
-  router.get(
-    "/itinerary/:itineraryId/activityWithLocations/",
-    ActivityStep.findAllForItineraryWithLocations
-  );
+  // Retrieve a single Activity with activityId
+  router.get("/activities/:id", Activity.findOne);
 
-  // Retrieve a single Activity Step with id
-  router.get("/itinerary/:itineraryId/activity/:id", ActivityStep.findOne);
+  // Update an Activity with activityId
+  router.put("/activities/:id", [authenticateRoute], Activity.update);
 
-  // Update a Activity Step with id
-  router.put(
-    "/itinerary/:itineraryId/activity/:id",
-    [authenticateRoute],
-    ActivityStep.update
-  );
+  // Delete an Activity with activityId
+  router.delete("/activities/:id", [authenticateRoute], Activity.delete);
 
-  // Delete a Activity Step with id
-  router.delete(
-    "/itinerary/:itineraryId/activity/:id",
-    [authenticateRoute],
-    ActivityStep.delete
-  );
-
-  // Delete all Activity Steps
-  router.delete("/activity/", [authenticateRoute], ActivityStep.deleteAll);
+  // Create a new Activity
+  router.delete("/activities/", [authenticateRoute], Activity.deleteAll);
 
   app.use("/travelapi", router);
 };

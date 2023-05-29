@@ -14,15 +14,21 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.location = require("./location.model.js")(sequelize, Sequelize);
+db.session = require("./session.model.js")(sequelize, Sequelize);
+db.user = require("./user.model.js")(sequelize, Sequelize);
+db.flight = require("./flight.model.js")(sequelize, Sequelize);
+db.itineraryFlight = require("./itineraryFlight.model.js")(sequelize, Sequelize);
+db.hotel = require("./hotel.model.js")(sequelize, Sequelize);
+db.itineraryHotel = require("./itineraryHotel.model.js")(sequelize, Sequelize);
 db.activity = require("./activity.model.js")(sequelize, Sequelize);
+db.itineraryActivity = require("./itineraryActivity.model.js")(sequelize, Sequelize);
+db.itinerary = require("./itinerary.model.js")(sequelize, Sequelize);
+db.location = require("./location.model.js")(sequelize, Sequelize);
 db.activityStep = require("./activityStep.model.js")(sequelize, Sequelize);
 db.itineraryLocation = require("./itineraryLocation.model.js")(
   sequelize,
   Sequelize
 );
-db.session = require("./session.model.js")(sequelize, Sequelize);
-db.user = require("./user.model.js")(sequelize, Sequelize);
 
 // foreign key for session
 db.user.hasMany(
@@ -36,59 +42,81 @@ db.session.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
-// foreign key for activity
+// foreign key for itinerary
 db.user.hasMany(
-  db.activity,
-  { as: "activity" },
+  db.itinerary,
+  { as: "itinerary" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.activity.belongsTo(
+db.itinerary.belongsTo(
   db.user,
   { as: "user" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
 
-// foreign key for activityStep
-db.activity.hasMany(
-  db.activityStep,
-  { as: "activityStep" },
+// foreign key for itineraryFlight
+db.itinerary.hasMany(
+  db.itineraryFlight,
+  { as: "itineraryFlight" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.activityStep.belongsTo(
-  db.activity,
-  { as: "activity" },
+db.flight.hasMany(
+  db.itineraryFlight,
+  { as: "itineraryFlight" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryFlight.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryFlight.belongsTo(
+  db.flight,
+  { as: "flight" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
-// foreign keys for itinerarylocation
-db.activityStep.hasMany(
-  db.itineraryLocation,
-  { as: "itineraryLocation" },
+// forign key for itineraryHotel
+db.itinerary.hasMany(
+  db.itineraryHotel,
+  { as: "itineraryHotel" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.hotel.hasMany(
+  db.itineraryHotel,
+  { as: "itineraryHotel" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryHotel.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryHotel.belongsTo(
+  db.hotel,
+  { as: "hotel" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+
+// forign key for itineraryActivity
+db.itinerary.hasMany(
+  db.itineraryActivity,
+  { as: "itineraryActivity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.activity.hasMany(
-  db.itineraryLocation,
-  { as: "itineraryLocation" },
+  db.itineraryActivity,
+  { as: "itineraryActivity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.location.hasMany(
-  db.itineraryLocation,
-  { as: "itineraryLocation" },
+db.itineraryActivity.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
-db.itineraryLocation.belongsTo(
-  db.activityStep,
-  { as: "activityStep" },
-  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
-);
-db.itineraryLocation.belongsTo(
+db.itineraryActivity.belongsTo(
   db.activity,
   { as: "activity" },
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-);
-db.itineraryLocation.belongsTo(
-  db.location,
-  { as: "location" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
