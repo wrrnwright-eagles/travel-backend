@@ -1,23 +1,15 @@
 module.exports = (sequelize, Sequelize) => {
   const Activity = sequelize.define("activity", {
-    name: {
+    dateTime: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+    location: {
       type: Sequelize.STRING,
       allowNull: false,
     },
     description: {
       type: Sequelize.STRING,
-      allowNull: false,
-    },
-    servings: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    time: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    isPublished: {
-      type: Sequelize.BOOLEAN,
       allowNull: false,
     },
   });

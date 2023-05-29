@@ -4,29 +4,29 @@ module.exports = (app) => {
   var router = require("express").Router();
 
   // Create a new Itinerary
-  router.post("/itinerary/", [authenticateRoute], Itinerary.create);
+  router.post("/itineraries/", [authenticateRoute], Itinerary.create);
 
   // Retrieve all Itineraries for user
   router.get(
-    "/itinerary/user/:userId",
+    "/itineraries/user/:userId",
     [authenticateRoute],
     Itinerary.findAllForUser
   );
 
   // Retrieve all published Itineraries
-  router.get("/itinerary/", Itinerary.findAllPublished);
+  router.get("/itineraries/", Itinerary.findAllPublished);
 
   // Retrieve a single Itinerary with id
-  router.get("/itinerary/:id", Itinerary.findOne);
+  router.get("/itineraries/:id", Itinerary.findOne);
 
   // Update a Itinerary with id
-  router.put("/itinerary/:id", [authenticateRoute], Itinerary.update);
+  router.put("/itineraries/:id", [authenticateRoute], Itinerary.update);
 
   // Delete a Itinerary with id
-  router.delete("/itinerary/:id", [authenticateRoute], Itinerary.delete);
+  router.delete("/itineraries/:id", [authenticateRoute], Itinerary.delete);
 
   // Delete all Itineraries
-  router.delete("/itinerary/", [authenticateRoute], Itinerary.deleteAll);
+  router.delete("/itineraries/", [authenticateRoute], Itinerary.deleteAll);
 
   app.use("/travelapi", router);
 };

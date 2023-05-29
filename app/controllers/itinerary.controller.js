@@ -1,89 +1,94 @@
 const db = require("../models");
+const Itinerary = db.itinerary;
+const ItineraryIngredient = db.itineraryFlight;
+const Flight = db.flight;
+const ItineraryHotel = db.itineraryHotel;
+const Hotel = db.hotel;
+const ItineraryActivity = db.itineraryActivity;
 const Activity = db.activity;
-const ActivityStep = db.activityStep;
-const ActivityLocation = db.ActivityLocation;
-const Location = db.location;
 const Op = db.Sequelize.Op;
-// Create and Save a new Activity
+// Create and Save a new Itinerary
 exports.create = (req, res) => {
   // Validate request
   if (req.body.name === undefined) {
-    const error = new Error("Name cannot be empty for Activity!");
+    const error = new Error("Name cannot be empty for itinerary!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.description === undefined) {
-    const error = new Error("Description cannot be empty for Activity!");
-    error.statusCode = 400;
-    throw error;
-  } else if (req.body.servings === undefined) {
-    const error = new Error("Servings cannot be empty for Activity!");
-    error.statusCode = 400;
-    throw error;
-  } else if (req.body.time === undefined) {
-    const error = new Error("Time cannot be empty for Activity!");
+    const error = new Error("Description cannot be empty for itinerary!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.isPublished === undefined) {
-    const error = new Error("Is Published cannot be empty for Activity!");
+    const error = new Error("Is Published cannot be empty for itinerary!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.userId === undefined) {
-    const error = new Error("User Id cannot be empty for Activity!");
+    const error = new Error("User Id cannot be empty for itinerary!");
     error.statusCode = 400;
     throw error;
   }
 
-  // Create a Activity
-  const activity = {
-    name: req.body.name,
-    description: req.body.description,
-    servings: req.body.servings,
-    time: req.body.time,
-    isPublished: req.body.isPublished ? req.body.isPublished : false,
-    userId: req.body.userId,
-  };
-  // Save Activity in the database
-  Activity.create(activity)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Activity.",
-      });
+// Create a Itinerary
+const itinerary = {
+  name: req.body.name,
+  description: req.body.description,
+  isPublished: req.body.isPublished ? req.body.isPublished : false,
+  userId: req.body.userId,
+};
+// Save Itinerary in the database
+Itinerary.create(itinerary)
+  .then((data) => {
+    res.send(data);
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while creating the Itinerary.",
     });
+  });
 };
 
-// Find all Activitys for a user
+// Find all Itineraries for a user
 exports.findAllForUser = (req, res) => {
   const userId = req.params.userId;
-  Activity.findAll({
+  Itinerary.findAll({
     where: { userId: userId },
     include: [
       {
-        model: ActivityStep,
-        as: "ActivityStep",
+        model: ItineraryFlight,
+        as: "itineraryFlight",
         required: false,
         include: [
           {
-            model: ActivityLocation,
-            as: "ActivityLocation",
+            model: Flight,
+            as: "flight",
             required: false,
-            include: [
-              {
-                model: Location,
-                as: "Location",
-                required: false,
-              },
-            ],
+          },
+        ],
+        model: ItineraryHotel,
+        as: "itineraryHotel",
+        required: false,
+        include: [
+          {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          },
+        ],
+        model: ItineraryActivity,
+        as: "itineraryActivity",
+        required: false,
+        include: [
+          {
+            model: Activity,
+            as: "activity",
+            required: false,
           },
         ],
       },
     ],
     order: [
       ["name", "ASC"],
-      [ActivityStep, "stepNumber", "ASC"],
     ],
   })
     .then((data) => {
@@ -91,46 +96,58 @@ exports.findAllForUser = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Activities for user with id=${userId}.`,
+          message: `Cannot find Itineraries for user with id=${userId}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Error retrieving Activitys for user with id=" + userId,
+          err.message || "Error retrieving Itineraries for user with id=" + userId,
       });
     });
 };
 
-// Find all Published Activitys
+// Find all Published Itineraries
 exports.findAllPublished = (req, res) => {
-  Activity.findAll({
+  Itinerary.findAll({
     where: { isPublished: true },
     include: [
       {
-        model: ActivityStep,
-        as: "activityStep",
+        model: ItineraryFlight,
+        as: "itineraryFlight",
         required: false,
         include: [
           {
-            model: ActivityLocation,
-            as: "ActivityLocation",
+            model: Flight,
+            as: "flight",
             required: false,
-            include: [
-              {
-                model: Location,
-                as: "location",
-                required: false,
-              },
-            ],
+          },
+        ],
+        model: ItineraryHotel,
+        as: "itineraryHotel",
+        required: false,
+        include: [
+          {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          },
+        ],
+        model: ItineraryActivity,
+        as: "itineraryActivity",
+        required: false,
+        include: [
+          {
+            model: Activity,
+            as: "activity",
+            required: false,
           },
         ],
       },
     ],
     order: [
       ["name", "ASC"],
-      [ActivityStep, "stepNumber", "ASC"],
     ],
   })
     .then((data) => {
@@ -138,119 +155,136 @@ exports.findAllPublished = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Published Activities.`,
+          message: `Cannot find Published Itineraries.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Published Activities.",
+        message: err.message || "Error retrieving Published Itineraries.",
       });
     });
 };
 
-// Find a single Activity with an id
+// Find a single Itinerary with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Activity.findAll({
+  Itinerary.findAll({
     where: { id: id },
     include: [
       {
-        model: ActivityStep,
-        as: "activityStep",
+        model: ItineraryFlight,
+        as: "itineraryFlight",
         required: false,
         include: [
           {
-            model: ActivityLocation,
-            as: "ActivityLocation",
+            model: Flight,
+            as: "flight",
             required: false,
-            include: [
-              {
-                model: Location,
-                as: "location",
-                required: false,
-              },
-            ],
+          },
+        ],
+        model: ItineraryHotel,
+        as: "itineraryHotel",
+        required: false,
+        include: [
+          {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          },
+        ],
+        model: ItineraryActivity,
+        as: "itineraryActivity",
+        required: false,
+        include: [
+          {
+            model: Activity,
+            as: "activity",
+            required: false,
           },
         ],
       },
     ],
-    order: [[ActivityStep, "stepNumber", "ASC"]],
+    order: [
+      ["name", "ASC"],
+    ],
   })
     .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Activity with id=${id}.`,
+          message: `Cannot find Itinerary with id=${id}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Activity with id=" + id,
+        message: err.message || "Error retrieving Itinerary with id=" + id,
       });
     });
 };
-// Update a Activity by the id in the request
+
+// Update a Itinerary by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Activity.update(req.body, {
+  Itinerary.update(req.body, {
     where: { id: id },
   })
     .then((number) => {
       if (number == 1) {
         res.send({
-          message: "Activity was updated successfully.",
+          message: "Itinerary was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Activity with id=${id}. Maybe Activity was not found or req.body is empty!`,
+          message: `Cannot update Itinerary with id=${id}. Maybe Itinerary was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error updating Activity with id=" + id,
+        message: err.message || "Error updating Itinerary with id=" + id,
       });
     });
 };
-// Delete a Activity with the specified id in the request
+
+// Delete a Itinerary with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Activity.destroy({
+  Itinerary.destroy({
     where: { id: id },
   })
     .then((number) => {
       if (number == 1) {
         res.send({
-          message: "Activity was deleted successfully!",
+          message: "Itinerary was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Activity with id=${id}. Maybe Activity was not found!`,
+          message: `Cannot delete Itinerary with id=${id}. Maybe Itinerary was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Could not delete Activity with id=" + id,
+        message: err.message || "Could not delete Itinerary with id=" + id,
       });
     });
 };
-// Delete all Activities from the database.
+// Delete all Itineraries from the database.
 exports.deleteAll = (req, res) => {
-  Activity.destroy({
+  Itinerary.destroy({
     where: {},
     truncate: false,
   })
     .then((number) => {
-      res.send({ message: `${number} Activities were deleted successfully!` });
+      res.send({ message: `${number} Itineraries were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Activities.",
+          err.message || "Some error occurred while removing all Itineraries.",
       });
     });
 };

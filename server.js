@@ -24,15 +24,22 @@ app.use(express.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the recipe backend." });
+  res.json({ message: "Welcome to the travel itinerary backend." });
 });
 
 require("./app/routes/auth.routes.js")(app);
+require("./app/routes/user.routes.js")(app);
+require("./app/routes/flight.routes.js")(app);
+require("./app/routes/itineraryFlight.routes.js")(app);
+require("./app/routes/hotel.routes.js")(app);
+require("./app/routes/itineraryHotel.routes.js")(app);
+require("./app/routes/activity.routes.js")(app);
+require("./app/routes/itineraryActivity.routes.js")(app);
 require("./app/routes/location.routes.js")(app);
 require("./app/routes/itinerary.routes.js")(app);
-require("./app/routes/activity.routes.js")(app);
+
 require("./app/routes/itineraryLocation.routes.js")(app);
-require("./app/routes/user.routes.js")(app);
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3201;
