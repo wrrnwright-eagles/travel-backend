@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const Hotel = sequelize.define("hotel", {
       checkInDate: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       checkOutDate: {
