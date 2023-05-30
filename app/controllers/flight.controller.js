@@ -50,8 +50,7 @@ exports.findAll = (req, res) => {
     ? { id: { [Op.like]: `%${id}%`, } }
     : null;
 
-    Flight.findAll({ where: condition, order: [["id", "ASC"]] })
-
+  Flight.findAll({ where: condition, order: [["id", "ASC"]] })
     .then((data) => {
       res.send(data);
     })
