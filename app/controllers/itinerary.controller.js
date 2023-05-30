@@ -1,6 +1,6 @@
 const db = require("../models");
 const Itinerary = db.itinerary;
-const ItineraryIngredient = db.itineraryFlight;
+const ItineraryFlight = db.itineraryFlight;
 const Flight = db.flight;
 const ItineraryHotel = db.itineraryHotel;
 const Hotel = db.hotel;
