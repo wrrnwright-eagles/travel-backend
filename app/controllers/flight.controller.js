@@ -5,19 +5,19 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Flight
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.depatureLocation === undefined) {
+  if (!req.body.departureLocation) {
     const error = new Error("Departure Location cannot be empty for Flight!");
     error.statusCode = 400;
     throw error;
-  } else if (req.body.depatureDateTime === undefined) {
+  } else if (!req.body.departureDateTime) {
     const error = new Error("Departure DateTime cannot be empty for Flight!");
     error.statusCode = 400;
     throw error;
-  } else if (req.body.arrivalLocation === undefined) {
+  } else if (!req.body.arrivalLocation) {
     const error = new Error("Arrival Location cannot be empty for Flight!");
     error.statusCode = 400;
     throw error;
-  } else if (req.body.arrivalDateTime === undefined) {
+  } else if (!req.body.arrivalDateTime) {
     const error = new Error("Arrival DateTime cannot be empty for Flight!");
     error.statusCode = 400;
     throw error;
@@ -25,8 +25,8 @@ exports.create = (req, res) => {
 
   // Create a Flight
   const flight = {
-    depatureLocation: req.body.depatureLocation,
-    depatureLocation: req.body.depatureLocation,
+    departureLocation: req.body.departureLocation,
+    departureDateTime: req.body.departureDateTime,
     arrivalLocation: req.body.arrivalLocation,
     arrivalDateTime: req.body.arrivalDateTime,
   };
@@ -45,23 +45,19 @@ exports.create = (req, res) => {
 
 // Retrieve all Flights from the database
 exports.findAll = (req, res) => {
-  const flightId = req.query.flightId;
-  var condition = flightId
-    ? {
-        id: {
-          [Op.like]: `%${flightId}%`,
-        },
-      }
+  const id = req.query.id;
+  var condition = id
+    ? { id: { [Op.like]: `%${id}%`, } }
     : null;
 
-  Flight.findAll({ where: condition, order: [["flightId", "ASC"]] })
+    Flight.findAll({ where: condition, order: [["id", "ASC"]] })
+
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving flights.",
+        message: err.message || "Some error occurred while retrieving flights.",
       });
     });
 };
@@ -115,36 +111,37 @@ exports.delete = (req, res) => {
   })
     .then((number) => {
       if (number == 1) {
-        res.send({
-          message: "Flight was deleted successfully!",
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Flight with id=${id}. Maybe Flight was not found!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Could not delete Flight with id=" + id,
-      });
-    });
-};
-
-// Delete all Flights from the database.
-exports.deleteAll = (req, res) => {
-  Flight.destroy({
-    where: {},
-    truncate: false,
-  })
-    .then((number) => {
-      res.send({ message: `${number} Flights were deleted successfully!` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all flights.",
-      });
-    });
-};
-
+                //...
+                res.send({
+                  message: "Flight was deleted successfully!",
+                });
+              } else {
+                res.send({
+                  message: `Cannot delete Flight with id=${id}. Maybe Flight was not found!`,
+                });
+              }
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message: err.message || "Could not delete Flight with id=" + id,
+              });
+            });
+        };
+        
+        // Delete all Flights from the database.
+        exports.deleteAll = (req, res) => {
+          Flight.destroy({
+            where: {},
+            truncate: false,
+          })
+            .then((number) => {
+              res.send({ message: `${number} Flights were deleted successfully!` });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message:
+                  err.message || "Some error occurred while removing all flights.",
+              });
+            });
+        };
+        
