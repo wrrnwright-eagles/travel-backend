@@ -54,7 +54,7 @@ exports.findAll = (req, res) => {
       }
     : null;
 
-  Flight.findAll({ where: condition, order: [["flightId", "ASC"]] })
+  Flight.findAll({ where: condition, order: [["id", "ASC"]] })
     .then((data) => {
       res.send(data);
     })
