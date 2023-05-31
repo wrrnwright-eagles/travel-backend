@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       location: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false,
       },
     });
