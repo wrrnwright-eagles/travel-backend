@@ -40,14 +40,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Hotels from the database.
 exports.findAll = (req, res) => {
-    const hotelId = req.query.hotelId;
-    var condition = hotelId
-      ? {
-          id: {
-            [Op.like]: `%${hotelId}%`,
-          },
-        }
-      : null;
+  const id = req.query.id;
+  var condition = id
+    ? { id: { [Op.like]: `%${id}%`, } }
+    : null;
   
     Hotel.findAll({ where: condition, order: [["checkInDate", "ASC"]] })
       .then((data) => {
