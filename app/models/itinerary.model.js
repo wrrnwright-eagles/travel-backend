@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Itinerary = sequelize.define("intinerary", {
+    const Itinerary = sequelize.define("itinerary", {
       name: {
         type: Sequelize.STRING,
         allowNull: false,

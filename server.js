@@ -2,12 +2,19 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
-
 const db = require("./app/models");
 
-db.sequelize.sync();
+db.sequelize.sync()
+  .then(() => {
+    console.log('Database synchronized');
+    //app.listen(3000, () => {
+      //console.log('Server started on port 3000');
+    //});
+  })
+  .catch((error) => {
+    console.error('Error synchronizing database:', error);
+  });
 
 var corsOptions = {
   origin: "http://localhost:8081",
@@ -37,10 +44,13 @@ require("./app/routes/activity.routes.js")(app);
 require("./app/routes/itineraryActivity.routes.js")(app);
 require("./app/routes/location.routes.js")(app);
 require("./app/routes/itinerary.routes.js")(app);
-
 require("./app/routes/itineraryLocation.routes.js")(app);
+require("./app/routes/forgotPassword.routes")(app);
 
-
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 // set port, listen for requests
 const PORT = process.env.PORT || 3201;
 if (process.env.NODE_ENV !== "test") {
