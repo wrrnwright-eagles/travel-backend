@@ -1,7 +1,9 @@
 const db = require("../models");
+const Itinerary = db.itinerary;
 const ItineraryActivity = db.itineraryActivity;
 const Activity = db.activity;
 const Op = db.Sequelize.Op;
+
 // Create and Save a new ItineraryActivity
 exports.create = (req, res) => {
   // Validate request
@@ -71,8 +73,8 @@ exports.findAllForItinerary = (req, res) => {
     where: { itineraryId: itineraryId },
     include: [
       {
-        model: Ingredient,
-        as: "ingredient",
+        model: Itinerary,
+        as: "Itinerary",
         required: true,
       },
     ],
