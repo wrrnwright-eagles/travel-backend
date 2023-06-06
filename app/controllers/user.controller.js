@@ -91,6 +91,41 @@ exports.create = async (req, res) => {
     });
 };
 
+exports.subscribeToItinerary = async (req, res) => {
+  const { userId, itineraryId } = req.body;
+
+  // Check if the user is already subscribed to the itinerary
+  const existingSubscription = await UserItinerary.findOne({
+    where: { userId, itineraryId },
+  });
+
+  if (existingSubscription) {
+    return res.status(400).send({
+      message: 'User is already subscribed to this itinerary',
+    });
+  }
+
+  // If not, create a new subscription
+  await UserItinerary.create({ userId, itineraryId });
+
+  res.send({
+    message: 'Successfully subscribed to itinerary',
+  });
+};
+
+exports.subscribe = (req, res) => {
+  // Extract userId and itineraryId from request parameters
+  const { userId, itineraryId } = req.params;
+
+  // Perform Sequelize operations to create a new subscription
+  Subscription.create({ userId, itineraryId })
+    .then(() => res.send({ success: true, message: 'Subscription successful' }))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send({ success: false, message: 'An error occurred' });
+    });
+};
+
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
   const id = req.query.id;
