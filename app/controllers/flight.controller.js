@@ -5,7 +5,11 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Flight
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.departureLocation) {
+  if (!req.body.flightNumber) {
+    const error = new Error("Flight Number cannot be empty for Flight!");
+    error.statusCode = 400;
+    throw error;
+  } else if (!req.body.departureLocation) {
     const error = new Error("Departure Location cannot be empty for Flight!");
     error.statusCode = 400;
     throw error;
@@ -25,6 +29,7 @@ exports.create = (req, res) => {
 
   // Create a Flight
   const flight = {
+    flightNumber: req.body.flightNumber,
     departureLocation: req.body.departureLocation,
     departureDateTime: req.body.departureDateTime,
     arrivalLocation: req.body.arrivalLocation,

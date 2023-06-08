@@ -5,7 +5,11 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Activity
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.dateTime === undefined) {
+  if (req.body.name === undefined) {
+    const error = new Error("Name cannot be empty for activity!");
+    error.statusCode = 400;
+    throw error;
+  } else if (req.body.dateTime === undefined) {
     const error = new Error("dateTime cannot be empty for activity!");
     error.statusCode = 400;
     throw error;
@@ -21,6 +25,7 @@ exports.create = (req, res) => {
 
   // Create a Activity
   const activity = {
+    name: req.body.name,
     dateTime: req.body.dateTime,
     location: req.body.location,
     description: req.body.description,
