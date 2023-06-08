@@ -24,11 +24,8 @@ db.activity = require("./activity.model.js")(sequelize, Sequelize);
 db.itineraryActivity = require("./itineraryActivity.model.js")(sequelize, Sequelize);
 db.itinerary = require("./itinerary.model.js")(sequelize, Sequelize);
 db.location = require("./location.model.js")(sequelize, Sequelize);
-db.activityStep = require("./activityStep.model.js")(sequelize, Sequelize);
-db.itineraryLocation = require("./itineraryLocation.model.js")(
-  sequelize,
-  Sequelize
-);
+db.activityStep = require("./activityStep.model.js")(sequelize, Sequelize); // do we need this one?
+db.itineraryStep = require("./itineraryStep.model.js")(sequelize, Sequelize);
 
 // foreign key for session
 db.user.hasMany(
