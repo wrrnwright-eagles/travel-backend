@@ -5,7 +5,11 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Hotel
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.checkInDate === undefined) {
+  if (req.body.name === undefined) {
+    const error = new Error("Name cannot be empty for hotel!");
+    error.statusCode = 400;
+    throw error;
+  } else if (req.body.checkInDate === undefined) {
     const error = new Error("checkInDate cannot be empty for hotel!");
     error.statusCode = 400;
     throw error;
