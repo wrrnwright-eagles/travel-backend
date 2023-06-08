@@ -51,6 +51,7 @@ jobs:
           debug: false
           command: |
             cd nodeapps/travel-backend
+            npm uninstall fsevents
             npm install
             sudo systemctl stop travel-backend
             sudo cp travel-backend.service /lib/systemd/system/travel-backend.service

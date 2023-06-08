@@ -1,5 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
   const Activity = sequelize.define("activity", {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     dateTime: {
       type: Sequelize.DATE,
       allowNull: false,
