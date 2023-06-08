@@ -71,13 +71,6 @@ exports.findAllForItinerary = (req, res) => {
   const itineraryId = req.params.itineraryId;
   ItineraryActivity.findAll({
     where: { itineraryId: itineraryId },
-    include: [
-      {
-        model: Itinerary,
-        as: "Itinerary",
-        required: true,
-      },
-    ],
   })
     .then((data) => {
       res.send(data);
