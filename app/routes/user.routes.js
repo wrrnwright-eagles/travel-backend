@@ -21,8 +21,5 @@ module.exports = (app) => {
   // Delete all Users
   router.delete("/users/", [authenticateRoute], User.deleteAll);
 
-  // Subscribe a User to an itinerary
-  router.post("/subscribe/:userId/:itineraryId", [authenticateRoute], User.subscribe);
-
   app.use("/travelapi", router);
 };
