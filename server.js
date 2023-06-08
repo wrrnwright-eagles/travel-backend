@@ -44,7 +44,6 @@ require("./app/routes/activity.routes.js")(app);
 require("./app/routes/itineraryActivity.routes.js")(app);
 require("./app/routes/location.routes.js")(app);
 require("./app/routes/itinerary.routes.js")(app);
-require("./app/routes/itineraryLocation.routes.js")(app);
 require("./app/routes/forgotPassword.routes")(app);
 
 app.use((err, req, res, next) => {
