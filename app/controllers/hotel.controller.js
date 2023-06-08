@@ -21,6 +21,7 @@ exports.create = (req, res) => {
 
   // Create a Hotel
   const hotel = {
+    name: req.body.name,
     checkInDate: req.body.checkInDate,
     checkOutDate: req.body.checkOutDate,
     location: req.body.location,

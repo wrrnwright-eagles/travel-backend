@@ -1,5 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Flight = sequelize.define("flight", {
+      flightNumber: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       departureLocation: {
         type: Sequelize.STRING,
         allowNull: false,

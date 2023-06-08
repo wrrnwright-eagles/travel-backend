@@ -11,3 +11,5 @@ module.exports = (sequelize, Sequelize) => {
   });
   return ActivityStep;
 };
+
+// do we need this model at all?
