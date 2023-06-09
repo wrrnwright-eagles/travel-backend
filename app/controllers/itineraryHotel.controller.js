@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new ItineraryHotel
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.name === undefined) {
+  if (req.body.quantity === undefined) {
     const error = new Error("Name cannot be empty for itinerary hotel!");
     error.statusCode = 400;
     throw error;
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 
   // Create a ItineraryHotel
   const itineraryHotel = {
-    name: req.body.name,
+    quantity: req.body.quantity,
     itineraryId: req.body.itineraryId,
     hotelId: req.body.hotelId,
   };
