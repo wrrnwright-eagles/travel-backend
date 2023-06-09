@@ -42,6 +42,7 @@ require("./app/routes/hotel.routes.js")(app);
 require("./app/routes/itineraryHotel.routes.js")(app);
 require("./app/routes/activity.routes.js")(app);
 require("./app/routes/itineraryActivity.routes.js")(app);
+require("./app/routes/itineraryStep.routes.js")(app);
 require("./app/routes/location.routes.js")(app);
 require("./app/routes/itinerary.routes.js")(app);
 require("./app/routes/forgotPassword.routes")(app);

@@ -26,6 +26,7 @@ exports.create = (req, res) => {
     const itineraryActivity = {
       quantity: req.body.quantity,
       itineraryId: req.body.itineraryId,
+      itineraryStepId: req.body.ItineraryStepId ? req.body.itineraryStepId : null,
       activityId: req.body.activityId,
     };
     // Save ItineraryActivity in the database

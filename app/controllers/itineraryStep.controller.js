@@ -1,32 +1,30 @@
 const db = require("../models");
 const ItineraryStep = db.itineraryStep;
+const ItineraryActivity = db.itineraryActivity;
+const Activity = db.activity;
+const ItineraryFlight = db.itineraryFlight;
+const Flight = db.flight;
+const ItineraryHotel = db.itineraryHotel
+const Hotel = db.hotel;
 const Step = db.Step;
 const Op = db.Sequelize.Op;
 // Create and Save a new ItineraryStep
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.quantity === undefined) {
-    const error = new Error("Quantity cannot be empty for Itinerary Step!");
+  if (req.body.stepNumber === undefined) {
+    const error = new Error("Step Number cannot be empty for Itinerary Step!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.itineraryId === undefined) {
     const error = new Error("Itinerary ID cannot be empty for Itinerary Step!");
     error.statusCode = 400;
     throw error;
-  } else if (req.body.locationId === undefined) {
-    const error = new Error(
-      "Step ID cannot be empty for Itinerary Step!"
-    );
-    error.statusCode = 400;
-    throw error;
   }
 
   // Create a ItineraryStep
   const itineraryStep = {
-    quantity: req.body.quantity,
+    stepNumber: req.body.stepNumber,
     itineraryId: req.body.itineraryId,
-    itineraryStepId: req.body.itineraryStepId ? req.body.itineraryStepId : null,
-    StepId: req.body.StepId,
   };
   
   // Save itineraryStep in the database
@@ -92,18 +90,26 @@ exports.findAllForItinerary = (req, res) => {
     });
 };
 
-// Find all itinerarySteps for a itinerary step and include the Steps
-exports.findAllForItineraryStepWithSteps = (req, res) => {
-  const itineraryStepId = req.params.itineraryStepId;
+// Find all itinerarySteps for a itinerary and include the Activities
+exports.findAllForItineraryWithActivities = (req, res) => {
+  const itineraryStepId = req.params.itineraryId;
   ItineraryStep.findAll({
-    where: { itineraryStepId: itineraryStepId },
+    where: { itineraryId: itineraryId },
     include: [
       {
-        model: Step,
-        as: "Step",
-        required: true,
+        model: ItineraryActivity,
+        as: "itineraryActivity",
+        required: false,
+        include: [
+          {
+            model: Activity,
+            as: "activity",
+            required: false,
+          }
+        ]
       },
     ],
+    order: [["stepNumber", 'ASC']],
   })
     .then((data) => {
       res.send(data);
@@ -112,7 +118,73 @@ exports.findAllForItineraryStepWithSteps = (req, res) => {
       res.status(500).send({
         message:
           err.message ||
-          "Some error occurred while retrieving itinerarySteps for a itinerary step.",
+          "Some error occurred while retrieving itineraryActivities for a itinerary step.",
+      });
+    });
+};
+
+// Find all itinerarySteps for a itinerary and include the Flights
+exports.findAllForItineraryWithFlights = (req, res) => {
+  const itineraryStepId = req.params.itineraryId;
+  ItineraryStep.findAll({
+    where: { itineraryId: itineraryId },
+    include: [
+      {
+        model: ItineraryFlight,
+        as: "itineraryFlight",
+        required: false,
+        include: [
+          {
+            model: Flight,
+            as: "flight",
+            required: false,
+          }
+        ]
+      },
+    ],
+    order: [["stepNumber", 'ASC']],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving itineraryFlights for a itinerary step.",
+      });
+    });
+};
+
+// Find all itinerarySteps for a itinerary and include the Hotels
+exports.findAllForItineraryWithHotels = (req, res) => {
+  const itineraryStepId = req.params.itineraryId;
+  ItineraryStep.findAll({
+    where: { itineraryId: itineraryId },
+    include: [
+      {
+        model: ItineraryHotel,
+        as: "itineraryHotel",
+        required: false,
+        include: [
+          {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          }
+        ]
+      },
+    ],
+    order: [["stepNumber", 'ASC']],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving itineraryActivities for a itinerary step.",
       });
     });
 };
