@@ -93,21 +93,17 @@ exports.create = async (req, res) => {
 
 exports.subscribeToItinerary = async (req, res) => {
   const { userId, itineraryId } = req.body;
-
   // Check if the user is already subscribed to the itinerary
   const existingSubscription = await UserItinerary.findOne({
     where: { userId, itineraryId },
   });
-
   if (existingSubscription) {
     return res.status(400).send({
       message: 'User is already subscribed to this itinerary',
     });
   }
-
   // If not, create a new subscription
   await UserItinerary.create({ userId, itineraryId });
-
   res.send({
     message: 'Successfully subscribed to itinerary',
   });

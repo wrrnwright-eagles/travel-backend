@@ -6,7 +6,6 @@ const Op = db.Sequelize.Op;
 exports.subscribe = async (req, res) => {
     console.log('subscribe function executed');
   const { email } = req.body;
-
   try {
     // Find the user with the provided email
     const user = await User.findOne({
