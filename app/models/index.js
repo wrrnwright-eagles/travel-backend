@@ -51,6 +51,18 @@ db.itinerary.belongsTo(
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
 
+// foreign key for itineraryStep
+db.itinerary.hasMany(
+  db.itineraryStep,
+  { as: "itineraryStep" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryStep.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+
 // foreign key for itineraryFlight
 db.itinerary.hasMany(
   db.itineraryFlight,
@@ -71,6 +83,16 @@ db.itineraryFlight.belongsTo(
   db.flight,
   { as: "flight" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryStep.hasMany(
+  db.itineraryFlight,
+  { as: "itineraryFlight" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryFlight.belongsTo(
+  db.itineraryStep,
+  { as: "itineraryStep" }, 
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
 );
 
 // forign key for itineraryHotel
@@ -94,8 +116,18 @@ db.itineraryHotel.belongsTo(
   { as: "hotel" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
+db.itineraryStep.hasMany(
+  db.itineraryHotel,
+  { as: "itineraryHotel" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryHotel.belongsTo(
+  db.itineraryStep,
+  { as: "itineraryStep" }, 
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+);
 
-// forign key for itineraryActivity
+// foreign key for itineraryActivity
 db.itinerary.hasMany(
   db.itineraryActivity,
   { as: "itineraryActivity" },
@@ -115,6 +147,16 @@ db.itineraryActivity.belongsTo(
   db.activity,
   { as: "activity" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryStep.hasMany(
+  db.itineraryActivity,
+  { as: "itineraryActivity" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryActivity.belongsTo(
+  db.itineraryStep,
+  { as: "itineraryStep" }, 
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
 );
 
 module.exports = db;

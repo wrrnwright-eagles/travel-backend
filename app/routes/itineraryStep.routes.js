@@ -16,14 +16,25 @@ module.exports = (app) => {
   // Retrieve all itinerary Steps for a Itinerary
   router.get(
     "/itinerary/:itineraryId/itineraryStep/",
-    itineraryStep.findAllForActivity
+    itineraryStep.findAllForItinerary
   );
 
-  // Retrieve all Recipe Ingredients for a Recipe Step and include the ingredients
-  // still need to work on this one
+  // Retrieve all Itinerary Steps for an Itinerary and include the activities
   router.get(
-    "/itinerary/:itineraryId/activity/:activityStepId/activityStepWithSteps/",
-    itineraryStep.findAllForActivityStepWithSteps
+    "/itineraries/:itineraryId/itineraryStepsWithActivities/",
+    itineraryStep.findAllForItineraryWithActivities
+  );
+
+   // Retrieve all Itinerary Steps for an Itinerary and include the flights
+   router.get(
+    "/itineraries/:itineraryId/itineraryStepsWithFlights/",
+    itineraryStep.findAllForItineraryWithFlights
+  );
+
+   // Retrieve all Itinerary Steps for an Itinerary and include the hotels
+   router.get(
+    "/itineraries/:itineraryId/itineraryStepsWithHotels/",
+    itineraryStep.findAllForItineraryWithHotels
   );
 
   // Retrieve a single Itinerary Step with id
