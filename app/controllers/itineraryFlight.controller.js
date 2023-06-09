@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new ItineraryFlight
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.flightNumber === undefined) {
+  if (req.body.quantity === undefined) {
     const error = new Error("Flight Number cannot be empty for Itinerary Flight!");
     error.statusCode = 400;
     throw error;
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 
   // Create a ItineraryFlight
   const itineraryFlight = {
-    flightNumber: req.body.flightNumber,
+    quantity: req.body.quantity,
     itineraryId: req.body.itineraryId,
     flightId: req.body.flightId,
   };

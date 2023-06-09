@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const ItineraryFlight = sequelize.define("itineraryFlight", {
-      flightNumber: {
-        type: Sequelize.STRING,
+      quantity: {
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
     });

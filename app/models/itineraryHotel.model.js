@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const ItineraryHotel = sequelize.define("itineraryHotel", {
-      name: {
-        type: Sequelize.STRING,
+      quantity: {
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
     });

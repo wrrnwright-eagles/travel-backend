@@ -1,5 +1,4 @@
 const db = require("../models");
-const Itinerary = db.itinerary;
 const ItineraryActivity = db.itineraryActivity;
 const Activity = db.activity;
 const Op = db.Sequelize.Op;
@@ -7,7 +6,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new ItineraryActivity
 exports.create = (req, res) => {
   // Validate request
-  if (req.body.name === undefined) {
+  if (req.body.quantity === undefined) {
     const error = new Error("name cannot be empty for itinerary activity!");
     error.statusCode = 400;
     throw error;
@@ -25,7 +24,7 @@ exports.create = (req, res) => {
   
     // Create a ItineraryActivity
     const itineraryActivity = {
-      name: req.body.name,
+      quantity: req.body.quantity,
       itineraryId: req.body.itineraryId,
       activityId: req.body.activityId,
     };
@@ -71,6 +70,13 @@ exports.findAllForItinerary = (req, res) => {
   const itineraryId = req.params.itineraryId;
   ItineraryActivity.findAll({
     where: { itineraryId: itineraryId },
+    include: [
+      {
+        model: Activity,
+        as: "activity",
+        required: true,
+      },
+    ],
   })
     .then((data) => {
       res.send(data);
