@@ -92,7 +92,7 @@ exports.findAllForItinerary = (req, res) => {
 
 // Find all itinerarySteps for a itinerary and include the Activities
 exports.findAllForItineraryWithActivities = (req, res) => {
-  const itineraryStepId = req.params.itineraryId;
+  const itineraryId = req.query.itineraryId;
   ItineraryStep.findAll({
     where: { itineraryId: itineraryId },
     include: [
@@ -125,7 +125,7 @@ exports.findAllForItineraryWithActivities = (req, res) => {
 
 // Find all itinerarySteps for a itinerary and include the Flights
 exports.findAllForItineraryWithFlights = (req, res) => {
-  const itineraryStepId = req.params.itineraryId;
+  const itineraryId = req.query.itineraryId;
   ItineraryStep.findAll({
     where: { itineraryId: itineraryId },
     include: [
@@ -158,7 +158,7 @@ exports.findAllForItineraryWithFlights = (req, res) => {
 
 // Find all itinerarySteps for a itinerary and include the Hotels
 exports.findAllForItineraryWithHotels = (req, res) => {
-  const itineraryStepId = req.params.itineraryId;
+  const itineraryId = req.query.itineraryId;
   ItineraryStep.findAll({
     where: { itineraryId: itineraryId },
     include: [
