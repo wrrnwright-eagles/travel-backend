@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   // Validate request
   if (req.body.quantity === undefined) {
-    const error = new Error("name cannot be empty for itinerary activity!");
+    const error = new Error("quantity cannot be empty for itinerary activity!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.itineraryId === undefined) {

@@ -48,10 +48,7 @@ require("./app/routes/itinerary.routes.js")(app);
 require("./app/routes/forgotPassword.routes")(app);
 require("./app/routes/subscribe.routes")(app);
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3201;
 if (process.env.NODE_ENV !== "test") {
