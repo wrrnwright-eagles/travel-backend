@@ -1,6 +1,6 @@
 const db = require("../models");
 const ItineraryHotel = db.itineraryHotel;
-const Hotel = db.Hotel;
+const Hotel = db.hotel;
 const Op = db.Sequelize.Op;
 // Create and Save a new ItineraryHotel
 exports.create = (req, res) => {
