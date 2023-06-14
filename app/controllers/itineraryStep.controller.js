@@ -39,7 +39,13 @@ exports.create = async (req, res) => {
 // Retrieve all itinerarySteps from the database.
 exports.findAll = async (req, res) => {
   const itineraryStepId = req.query.itineraryStepId;
-  var condition = itineraryStepId ? { id: itineraryStepId } : null; // Fixed operator
+  var condition = itineraryStepId 
+    ? { 
+      id: {
+        [Op.like]: `%${itineraryStepId }%`,
+      },
+     }
+    : null; // Fixed operator
 
   try {
     const data = await ItineraryStep.findAll({ where: condition });
@@ -51,33 +57,30 @@ exports.findAll = async (req, res) => {
   }
 };
 
+// Retrieve all ItinerarySteps for a itinerary from the database.
 exports.findAllForItinerary = async (req, res) => {
   const itineraryId = req.params.itineraryId;
-  try {
-    const data = await ItineraryStep.findAll({
-      where: { itineraryId: itineraryId },
-      include: [
-        {
-          model: Step,
-          as: "step",
-          required: true,
-        },
-      ],
+
+  ItineraryStep.findAll({
+    where: { itineraryId: itineraryId },
+    order: [["stepNumber", "ASC"]],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving itinerarySteps for a itinerary.",
+      });
     });
-    res.send(data);
-  } catch (err) {
-    res.status(500).send({
-      message:
-        err.message ||
-        "Some error occurred while retrieving itinerarySteps for an itinerary.",
-    });
-  }
 };
 
-exports.findAllForItineraryWithActivities = async (req, res) => {
+// Retrieve all ItinerarySteps for a itinerary and include the activities
+exports.findAllForItineraryWithActivities = (req, res) => {
   const itineraryId = req.query.itineraryId;
-  try {
-    const data = await ItineraryStep.findAll({
+    ItineraryStep.findAll({
       where: { itineraryId: itineraryId },
       include: [
         {
@@ -94,21 +97,23 @@ exports.findAllForItineraryWithActivities = async (req, res) => {
         },
       ],
       order: [["stepNumber", "ASC"]],
-    });
-    res.send(data);
-  } catch (err) {
-    res.status(500).send({
-      message:
-        err.message ||
-        "Some error occurred while retrieving itineraryActivities for an itinerary step.",
-    });
-  }
+    })
+      .then((data) => {
+        res.send(data);
+      }) 
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Some error occurred while retrieving itineraryActivities for an itinerary step.",
+        });
+      });
 };
 
-exports.findAllForItineraryWithFlights = async (req, res) => {
+// Retrieve all ItinerarySteps for a itinerary and include the flights
+exports.findAllForItineraryWithFlights = (req, res) => {
   const itineraryId = req.query.itineraryId;
-  try {
-    const data = await ItineraryStep.findAll({
+    ItineraryStep.findAll({
       where: { itineraryId: itineraryId },
       include: [
         {
@@ -125,21 +130,23 @@ exports.findAllForItineraryWithFlights = async (req, res) => {
         },
       ],
       order: [["stepNumber", "ASC"]],
-    });
-    res.send(data);
-  } catch (err) {
-    res.status(500).send({
-      message:
-        err.message ||
-        "Some error occurred while retrieving itineraryFlights for an itinerary step.",
-    });
-  }
+    })
+      .then((data) => {
+        res.send(data);
+      }) 
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Some error occurred while retrieving itineraryFlights for an itinerary step.",
+        });
+      });
 };
 
-exports.findAllForItineraryWithHotels = async (req, res) => {
+// Retrieve all ItinerarySteps for a itinerary and include the hotels
+exports.findAllForItineraryWithHotels = (req, res) => {
   const itineraryId = req.query.itineraryId;
-  try {
-    const data = await ItineraryStep.findAll({
+    ItineraryStep.findAll({
       where: { itineraryId: itineraryId },
       include: [
         {
@@ -156,15 +163,17 @@ exports.findAllForItineraryWithHotels = async (req, res) => {
         },
       ],
       order: [["stepNumber", "ASC"]],
-    });
-    res.send(data);
-  } catch (err) {
-    res.status(500).send({
-      message:
-        err.message ||
-        "Some error occurred while retrieving itineraryActivities for an itinerary step.",
-    });
-  }
+    })
+      .then((data) => {
+        res.send(data);
+      }) 
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Some error occurred while retrieving itineraryHotels for an itinerary step.",
+        });
+      });
 };
 
 exports.findOne = async (req, res) => {

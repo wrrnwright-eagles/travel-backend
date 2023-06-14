@@ -5,17 +5,17 @@ module.exports = (app) => {
 
   // Create a new Itinerary Step for a Itinerary
   router.post(
-    "/itineraries/:itineraryId/itineraryStep/",
+    "/itineraries/:itineraryId/itinerarySteps/",
     [authenticateRoute],
     itineraryStep.create
   );
 
   // Retrieve all Itinerary Steps
-  router.get("/itineraryStep/", itineraryStep.findAll);
+  router.get("/itinerarySteps/", itineraryStep.findAll);
 
   // Retrieve all itinerary Steps for a Itinerary
   router.get(
-    "/itineraries/:itineraryId/itineraryStep/",
+    "/itineraries/:itineraryId/itinerarySteps/",
     itineraryStep.findAllForItinerary
   );
 
@@ -39,27 +39,27 @@ module.exports = (app) => {
 
   // Retrieve a single Itinerary Step with id
   router.get(
-    "/itineraries/:itineraryId/itineraryStep/:id",
+    "/itineraries/:itineraryId/itinerarySteps/:id",
     itineraryStep.findOne
   );
 
   // Update a Itinerary Step with id
   router.put(
-    "/itineraries/:itineraryId/itineraryStep/:id",
+    "/itineraries/:itineraryId/itinerarySteps/:id",
     [authenticateRoute],
     itineraryStep.update
   );
 
   // Delete a Itinerary Step with id
   router.delete(
-    "/itineraries/:itineraryId/itineraryStep/:id",
+    "/itineraries/:itineraryId/itinerarySteps/:id",
     [authenticateRoute],
     itineraryStep.delete
   );
 
   // Delete all Itinerary Steps
   router.delete(
-    "/itineraryStep/",
+    "/itinerarySteps/",
     [authenticateRoute],
     itineraryStep.deleteAll
   );
