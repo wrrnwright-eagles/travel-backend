@@ -1,113 +1,105 @@
 const db = require("../models");
 const User = db.user;
-const Session = db.session;
 const Op = db.Sequelize.Op;
-const { encrypt, getSalt, hashPassword } = require("../authentication/crypto");
+const Session = db.session;
 
 // Create and Save a new User
 exports.create = async (req, res) => {
-  // Validate request
-  if (req.body.firstName === undefined) {
-    const error = new Error("First name cannot be empty for user!");
-    error.statusCode = 400;
-    throw error;
-  } else if (req.body.lastName === undefined) {
-    const error = new Error("Last name cannot be empty for user!");
-    error.statusCode = 400;
-    throw error;
-  } else if (req.body.email === undefined) {
-    const error = new Error("Email cannot be empty for user!");
-    error.statusCode = 400;
-    throw error;
-  } else if (req.body.password === undefined) {
-    const error = new Error("Password cannot be empty for user!");
-    error.statusCode = 400;
-    throw error;
+  const { firstName, lastName, email, password } = req.body;
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(400).send({
+      message: 'First name, last name, email and password are required for creating a user'
+    });
   }
 
-  // find by email
-  await User.findOne({
-    where: {
-      email: req.body.email,
-    },
-  })
-    .then(async (data) => {
-      if (data) {
-        return "This email is already in use.";
-      } else {
-        console.log("email not found");
+  try {
+    // Check if email already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).send({
+        message: 'This email is already in use'
+      });
+    }
 
-        let salt = await getSalt();
-        let hash = await hashPassword(req.body.password, salt);
+    let salt = await getSalt();
+    let hash = await hashPassword(password, salt);
 
-        // Create a User
-        const user = {
-          id: req.body.id,
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email,
-          password: hash,
-          salt: salt,
-        };
+    // Create a User
+    const user = {
+      id: req.body.id,
+      firstName,
+      lastName,
+      email,
+      password: hash,
+      salt: salt,
+      isAdmin: false 
+    };
 
-        // Save User in the database
-        await User.create(user)
-          .then(async (data) => {
-            // Create a Session for the new user
-            let userId = data.id;
+    // Save User in the database
+    const newUser = await User.create(user);
+    let userId = newUser.id;
 
-            let expireTime = new Date();
-            expireTime.setDate(expireTime.getDate() + 1);
+    let expireTime = new Date();
+    expireTime.setDate(expireTime.getDate() + 1);
 
-            const session = {
-              email: req.body.email,
-              userId: userId,
-              expirationDate: expireTime,
-            };
-            await Session.create(session).then(async (data) => {
-              let sessionId = data.id;
-              let token = await encrypt(sessionId);
-              let userInfo = {
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                id: user.id,
-                token: token,
-              };
-              res.send(userInfo);
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).send({
-              message:
-                err.message || "Some error occurred while creating the User.",
-            });
-          });
-      }
-    })
-    .catch((err) => {
-      return err.message || "Error retrieving User with email=" + email;
+    const session = {
+      email: email,
+      userId: userId,
+      expirationDate: expireTime,
+    };
+    const newSession = await Session.create(session);
+    let sessionId = newSession.id;
+    let token = await encrypt(sessionId);
+
+    let userInfo = {
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      id: user.id,
+      isAdmin: user.isAdmin, // Here is the addition of isAdmin
+      token: token,
+    };
+    return res.send(userInfo);
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      message: error.message || 'Some error occurred while creating the User.'
     });
+  }
 };
 
 exports.subscribeToItinerary = async (req, res) => {
   const { userId, itineraryId } = req.body;
-  // Check if the user is already subscribed to the itinerary
-  const existingSubscription = await UserItinerary.findOne({
-    where: { userId, itineraryId },
-  });
-  if (existingSubscription) {
+  if (!userId || !itineraryId) {
     return res.status(400).send({
-      message: 'User is already subscribed to this itinerary',
+      message: 'userId and itineraryId are required'
     });
   }
-  // If not, create a new subscription
-  await UserItinerary.create({ userId, itineraryId });
-  res.send({
-    message: 'Successfully subscribed to itinerary',
-  });
+
+  try {
+    // Check if the user is already subscribed to the itinerary
+    const existingSubscription = await UserItinerary.findOne({ where: { userId, itineraryId } });
+
+    if (existingSubscription) {
+      return res.status(400).send({
+        message: 'User is already subscribed to this itinerary'
+      });
+    }
+
+    // If not, create a new subscription
+    await UserItinerary.create({ userId, itineraryId });
+
+    return res.send({
+      message: 'Successfully subscribed to itinerary'
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: error.message || 'Some error occurred while subscribing to the itinerary'
+    });
+  }
 };
+
 
 exports.subscribe = (req, res) => {
   // Extract userId and itineraryId from request parameters
