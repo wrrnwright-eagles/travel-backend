@@ -48,6 +48,69 @@ Itinerary.create(itinerary)
   });
 };
 
+
+exports.findArchivedForUser = (req, res) => {
+  const userId = req.params.userId;
+  Itinerary.findAll({
+    where: { 
+      userId: userId,
+      isArchived: true
+    },
+    include: [
+      {
+        model: ItineraryFlight,
+        as: "itineraryFlight",
+        required: false,
+        include: [
+          {
+            model: Flight,
+            as: "flight",
+            required: false,
+          },
+        ],
+        model: ItineraryHotel,
+        as: "itineraryHotel",
+        required: false,
+        include: [
+          {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          },
+        ],
+        model: ItineraryActivity,
+        as: "itineraryActivity",
+        required: false,
+        include: [
+          {
+            model: Activity,
+            as: "activity",
+            required: false,
+          },
+        ],
+      },
+    ],
+    order: [
+      ["name", "ASC"],
+    ],
+  })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Archived Itineraries for user with id=${userId}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Error retrieving Archived Itineraries for user with id=" + userId,
+      });
+    });
+};
+
 // Find all Itineraries for a user
 exports.findAllForUser = (req, res) => {
   const userId = req.params.userId;
@@ -272,6 +335,29 @@ exports.delete = (req, res) => {
       });
     });
 };
+
+// Archive a Itinerary by the id in the request
+exports.archive = (req, res) => {
+  const id = req.params.id;
+  Itinerary.update({ isArchived: true }, { 
+    where: { id: id } 
+  })
+  .then(num => {
+    if (num == 1) {
+      res.send({ message: "Itinerary was archived successfully." });
+    } else {
+      res.send({
+        message: `Cannot archive Itinerary with id=${id}. Maybe Itinerary was not found or req.body is empty!`,
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: err.message || "Error archiving Itinerary with id=" + id,
+    });
+  });
+};
+
 // Delete all Itineraries from the database.
 exports.deleteAll = (req, res) => {
   Itinerary.destroy({
@@ -285,6 +371,63 @@ exports.deleteAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all Itineraries.",
+      });
+    });
+};
+
+exports.findArchived = (req, res) => {
+  Itinerary.findAll({
+    where: { isArchived: true },
+    include: [
+      {
+        model: ItineraryFlight,
+        as: "itineraryFlight",
+        required: false,
+        include: [
+          {
+            model: Flight,
+            as: "flight",
+            required: false,
+          },
+        ],
+        model: ItineraryHotel,
+        as: "itineraryHotel",
+        required: false,
+        include: [
+          {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          },
+        ],
+        model: ItineraryActivity,
+        as: "itineraryActivity",
+        required: false,
+        include: [
+          {
+            model: Activity,
+            as: "activity",
+            required: false,
+          },
+        ],
+      },
+    ],
+    order: [
+      ["name", "ASC"],
+    ],
+  })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Archived Itineraries.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Error retrieving Archived Itineraries.",
       });
     });
 };
