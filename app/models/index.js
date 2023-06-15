@@ -92,7 +92,7 @@ db.itineraryStep.hasMany(
 db.itineraryFlight.belongsTo(
   db.itineraryStep,
   { as: "itineraryStep" }, 
-  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+  { foreignKey: {allowNull: true }, onDelete: "CASCADE" }
 );
 
 // forign key for itineraryHotel
@@ -124,7 +124,7 @@ db.itineraryStep.hasMany(
 db.itineraryHotel.belongsTo(
   db.itineraryStep,
   { as: "itineraryStep" }, 
-  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+  { foreignKey: {allowNull: true }, onDelete: "CASCADE" }
 );
 
 // foreign key for itineraryActivity
@@ -156,7 +156,7 @@ db.itineraryStep.hasMany(
 db.itineraryActivity.belongsTo(
   db.itineraryStep,
   { as: "itineraryStep" }, 
-  { foreignKey: {allowNull: false }, onDelete: "CASCADE" }
+  { foreignKey: {allowNull: true }, onDelete: "CASCADE" }
 );
 
 module.exports = db;
