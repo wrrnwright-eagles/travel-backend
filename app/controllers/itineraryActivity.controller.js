@@ -92,6 +92,31 @@ exports.findAllForItinerary = (req, res) => {
     });
 };
 
+// Find all ItineraryActivities for a itinerary step and include the activities
+exports.findAllForItineraryStepWithActivities = (req, res) => {
+  const itineraryStepId = req.params.itineraryStepId;
+  ItineraryActivity.findAll({
+    where: { itineraryStepId: itineraryStepId },
+    include: [
+      {
+        model: Activity,
+        as: "activity",
+        required: true,
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving itineraryActivities for a itinerary step.",
+      });
+    });
+};
+
 // Find a single ItineraryActivity with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;

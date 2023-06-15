@@ -47,14 +47,16 @@ exports.findAll = async (req, res) => {
      }
     : null; // Fixed operator
 
-  try {
-    const data = await ItineraryStep.findAll({ where: condition });
+  
+    ItineraryStep.findAll({ where: condition })
+    .then((data) => {
     res.send(data);
-  } catch (err) {
+    })
+    .catch((err) => {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving itinerarySteps.",
     });
-  }
+  });
 };
 
 // Retrieve all ItinerarySteps for a itinerary from the database.
@@ -79,19 +81,19 @@ exports.findAllForItinerary = async (req, res) => {
 
 // Retrieve all ItinerarySteps for a itinerary and include the activities
 exports.findAllForItineraryWithActivities = (req, res) => {
-  const itineraryId = req.query.itineraryId;
+  const itineraryId = req.params.itineraryId;
     ItineraryStep.findAll({
       where: { itineraryId: itineraryId },
       include: [
         {
           model: ItineraryActivity,
           as: "itineraryActivity",
-          required: false,
+          
           include: [
             {
               model: Activity,
               as: "activity",
-              required: false,
+              
             },
           ],
         },
@@ -112,19 +114,19 @@ exports.findAllForItineraryWithActivities = (req, res) => {
 
 // Retrieve all ItinerarySteps for a itinerary and include the flights
 exports.findAllForItineraryWithFlights = (req, res) => {
-  const itineraryId = req.query.itineraryId;
+  const itineraryId = req.params.itineraryId;
     ItineraryStep.findAll({
       where: { itineraryId: itineraryId },
       include: [
         {
           model: ItineraryFlight,
           as: "itineraryFlight",
-          required: false,
+          
           include: [
             {
               model: Flight,
               as: "flight",
-              required: false,
+              
             },
           ],
         },
@@ -145,19 +147,19 @@ exports.findAllForItineraryWithFlights = (req, res) => {
 
 // Retrieve all ItinerarySteps for a itinerary and include the hotels
 exports.findAllForItineraryWithHotels = (req, res) => {
-  const itineraryId = req.query.itineraryId;
+  const itineraryId = req.params.itineraryId;
     ItineraryStep.findAll({
       where: { itineraryId: itineraryId },
       include: [
         {
           model: ItineraryHotel,
           as: "itineraryHotel",
-          required: false,
+          
           include: [
             {
               model: Hotel,
               as: "hotel",
-              required: false,
+              
             },
           ],
         },

@@ -90,6 +90,31 @@ exports.findAllForItinerary = (req, res) => {
       });
 };
 
+// Find all ItineraryHotels for a itinerary step and include the hotels
+exports.findAllForItineraryStepWithHotels = (req, res) => {
+  const itineraryStepId = req.params.itineraryStepId;
+  ItineraryHotel.findAll({
+    where: { itineraryStepId: itineraryStepId },
+    include: [
+      {
+        model: Hotel,
+        as: "hotel",
+        required: true,
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving itineraryHotels for a itinerary step.",
+      });
+    });
+};
+
 // Find a single ItineraryHotel with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;

@@ -18,6 +18,12 @@ module.exports = (app) => {
       "/itineraries/:itineraryId/itineraryActivities/",
       ItineraryActivity.findAllForItinerary
     );
+
+    // Retrieve all Itinerary Hotels for a Itinerary Step and include the hotels
+    router.get(
+      "/itineraries/:itineraryId/itinerarySteps/:itineraryStepId/itineraryActivitiesWithActivities/",
+      ItineraryActivity.findAllForItineraryStepWithActivities
+    );
   
     // Retrieve a single Itinerary Activity with id
     router.get(

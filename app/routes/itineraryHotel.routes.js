@@ -13,10 +13,16 @@ module.exports = (app) => {
     // Retrieve all Itinerary Hotels
     router.get("/itineraryHotels/", ItineraryHotel.findAll);
   
-    // Retrieve all Itinerary Hotels for a Recipe
+    // Retrieve all Itinerary Hotels for a Itinerary
     router.get(
       "/itineraries/:itineraryId/itineraryHotels/",
       ItineraryHotel.findAllForItinerary
+    );
+
+    // Retrieve all Itinerary Hotels for a Itinerary Step and include the hotels
+    router.get(
+      "/itineraries/:itineraryId/itinerarySteps/:itineraryStepId/itineraryHotelsWithHotels/",
+      ItineraryHotel.findAllForItineraryStepWithHotels
     );
   
     // Retrieve a single Itinerary Hotel with id
