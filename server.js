@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -44,6 +45,7 @@ require("./app/routes/location.routes.js")(app);
 require("./app/routes/itinerary.routes.js")(app);
 require("./app/routes/forgotPassword.routes")(app);
 require("./app/routes/subscribe.routes")(app);
+require("./app/routes/itineraryParticipants.routes.js")(app);
 
 
 // set port, listen for requests
