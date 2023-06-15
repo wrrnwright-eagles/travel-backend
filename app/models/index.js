@@ -27,6 +27,21 @@ db.location = require("./location.model.js")(sequelize, Sequelize);
 db.activityStep = require("./activityStep.model.js")(sequelize, Sequelize); // do we need this one?
 db.itineraryStep = require("./itineraryStep.model.js")(sequelize, Sequelize);
 
+db.itineraryParticipants = require("./itineraryParticipants.model.js")(sequelize, Sequelize);
+
+
+// foreign key for itineraryParticipants
+db.itinerary.hasMany(
+  db.itineraryParticipants,
+  { as: "itineraryParticipants" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itineraryParticipants.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+
 // foreign key for session
 db.user.hasMany(
   db.session,
